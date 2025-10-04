@@ -1,107 +1,137 @@
-1. Ringkasan Proyek (Project Summary)
-Proyek ini bertujuan untuk membangun sebuah website modern sebagai platform dokumentasi semua kegiatan organisasi. Website ini akan berfungsi layaknya portal berita, di mana setiap kegiatan disajikan sebagai sebuah artikel. Desain antarmuka akan mengadopsi gaya minimalis modern dengan tema cerah, menonjolkan dua elemen utama: Navbar bergaya Dynamic Island dan efek visual Liquid Glass (Glassmorphism).
+## **Dokumen Spesifikasi Teknis: Website Berita Organisasi**
 
-Sistem akan didukung oleh Supabase sebagai backend, menggunakan database PostgreSQL. Terdapat halaman admin yang terlindungi oleh sistem otentikasi (login) untuk mengelola konten kegiatan melalui operasi CRUD (Create, Read, Update, Delete). Proyek ini akan dikembangkan sebagai static site dan direncanakan untuk di-deploy menggunakan GitHub Pages.
+### **1. Tumpukan Teknologi (Tech Stack)**
 
-2. Tumpukan Teknologi (Tech Stack)
-Berikut adalah teknologi yang direkomendasikan untuk membangun proyek ini agar optimal, modern, dan sesuai dengan target deployment di GitHub Pages.
+Website ini akan dibangun menggunakan tumpukan teknologi modern yang disediakan oleh CodeGuide Starter Kit, dengan beberapa penyesuaian untuk kebutuhan spesifik proyek berita.
 
-Frontend Framework: Next.js (dengan Static Export)
+  * **Framework:** **Next.js 15** (dengan App Router) akan digunakan sebagai kerangka utama untuk membangun antarmuka pengguna yang cepat dan SEO-friendly.
+  * **Bahasa:** **TypeScript** akan digunakan untuk memastikan kode yang lebih aman dan mudah dikelola.
+  * **Styling:** **Tailwind CSS v4** akan digunakan untuk membangun antarmuka yang responsif dan modern dengan cepat.
+  * **Komponen UI:** **shadcn/ui** akan menyediakan koleksi komponen antarmuka yang siap pakai dan dapat disesuaikan.
+  * **Autentikasi & Manajemen Pengguna:** **Clerk** akan menangani semua kebutuhan autentikasi, termasuk login, registrasi, dan manajemen sesi untuk halaman admin.
+  * **Database:** **Supabase** akan digunakan sebagai basis data utama untuk menyimpan semua konten berita, informasi penulis, dan data terkait lainnya. Supabase juga menyediakan fitur *real-time* jika diperlukan di masa depan.
 
-Alasan: Next.js sangat powerful dan bisa menghasilkan situs statis (HTML, CSS, JS) murni yang sempurna untuk GitHub Pages. Memberikan pengalaman development yang luar biasa (DX) dan performa website yang cepat (Core Web Vitals).
+### **2. Fitur-fitur Aplikasi**
 
-Bahasa: TypeScript
+Aplikasi akan dibagi menjadi dua bagian utama: halaman publik untuk pembaca dan halaman admin untuk manajemen konten.
 
-Alasan: Menambahkan type-safety pada JavaScript, mengurangi bug, dan membuat kode lebih mudah dikelola seiring waktu.
+#### **Fitur Halaman Publik:**
 
-Styling: Tailwind CSS
+  * **Tampilan Berita Utama:** Menampilkan berita-berita terbaru dan terpopuler di halaman depan.
+  * **Daftar Berita:** Halaman yang menampilkan semua berita dengan fitur *pagination*.
+  * **Detail Berita:** Halaman untuk membaca satu artikel berita secara lengkap, menampilkan judul, gambar utama, isi konten, nama penulis, dan tanggal publikasi.
+  * **Kategori Berita:** Pengguna dapat memfilter berita berdasarkan kategori tertentu (misalnya, "Kegiatan Sosial," "Prestasi," "Pengumuman").
+  * **Pencarian Berita:** Fitur pencarian untuk menemukan berita berdasarkan judul atau kata kunci.
+  * **Halaman Penulis:** Menampilkan daftar semua penulis dan artikel yang telah mereka tulis.
 
-Alasan: Sangat cocok untuk membangun desain minimalis modern dengan cepat. Memudahkan pembuatan efek Glassmorphism dan desain responsif.
+#### **Fitur Halaman Admin (Dilindungi Autentikasi):**
 
-Backend as a Service (BaaS): Supabase
+  * **Dashboard Admin:** Halaman utama setelah admin login, menampilkan ringkasan jumlah berita, kategori, dan penulis.
+  * **Manajemen Berita (CRUD):**
+      * **Create:** Menambahkan berita baru melalui editor teks.
+      * **Read:** Melihat daftar semua berita yang ada.
+      * **Update:** Mengedit berita yang sudah ada.
+      * **Delete:** Menghapus berita.
+  * **Manajemen Kategori:** Admin dapat menambah, mengedit, dan menghapus kategori berita.
+  * **Manajemen Penulis:** Admin dapat menambah, mengedit, dan menghapus data penulis.
+  * **Unggah Gambar:** Kemampuan untuk mengunggah gambar sebagai *thumbnail* atau gambar pendukung dalam berita.
 
-Alasan: Menyediakan semua yang kita butuhkan: Database PostgreSQL, Otentikasi, dan File Storage. Kebijakan RLS-nya menjadi kunci keamanan karena semua akses data dilakukan dari sisi klien (browser).
+### **3. Alur Kerja Aplikasi**
 
-Deployment: GitHub Pages & GitHub Actions
+#### **Alur Pengguna (Pembaca):**
 
-Alasan: Hosting gratis untuk situs statis, terintegrasi penuh dengan workflow development di GitHub. GitHub Actions akan mengotomatiskan proses build dan deploy setiap kali ada perubahan di kode.
+1.  Pengguna membuka website dan langsung melihat halaman utama yang berisi daftar berita terbaru.
+2.  Pengguna dapat mengklik salah satu berita untuk membacanya secara lengkap.
+3.  Pengguna dapat menavigasi ke halaman kategori untuk melihat berita berdasarkan topik tertentu.
+4.  Pengguna dapat menggunakan fitur pencarian untuk menemukan berita yang spesifik.
 
-3. Fitur-fitur Utama (Main Features)
-A. Fitur untuk Pengguna Publik (Public-Facing Features)
+#### **Alur Admin (Pengelola Konten):**
 
-Halaman Utama (Homepage)
+1.  Admin mengakses halaman login khusus (misalnya, `/admin/login`).
+2.  Admin memasukkan kredensial dan diautentikasi oleh **Clerk**.
+3.  Setelah berhasil login, admin diarahkan ke *dashboard* admin.
+4.  Di *dashboard*, admin dapat memilih menu untuk mengelola berita, kategori, atau penulis.
+5.  Misalnya, untuk menambah berita baru, admin akan membuka formulir pembuatan berita, mengisi judul, konten, memilih kategori, penulis, dan mengunggah gambar, lalu menyimpannya.
+6.  Berita yang baru ditambahkan akan langsung tersimpan di **Supabase** dan dapat dilihat oleh publik.
 
-Menampilkan daftar semua kegiatan yang telah dipublikasikan dalam format grid atau list yang menarik.
+### **4. Skema Database**
 
-Setiap item menampilkan judul, gambar utama, dan ringkasan singkat.
+Database akan dirancang untuk mendukung semua fitur yang telah disebutkan. Berikut adalah skema dan kode SQL untuk membuat tabel-tabel yang dibutuhkan di Supabase.
 
-Paginasi atau infinite scroll untuk memuat kegiatan yang lebih lama.
+#### **Tabel `authors`**
 
-Halaman Detail Kegiatan
+Menyimpan informasi tentang penulis berita.
 
-Ketika sebuah kegiatan di-klik dari halaman utama, pengguna akan diarahkan ke halaman detailnya.
+```sql
+CREATE TABLE authors (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name TEXT NOT NULL,
+  avatar_url TEXT,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+```
 
-Menampilkan judul, gambar utama, konten lengkap kegiatan, tanggal publikasi, dan nama penulis/kontributor.
+#### **Tabel `categories`**
 
-URL yang bersih dan SEO-friendly (contoh: domain.com/kegiatan/judul-kegiatan-disini).
+Menyimpan kategori-kategori berita.
 
-Desain Antarmuka (UI/UX)
+```sql
+CREATE TABLE categories (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name TEXT NOT NULL UNIQUE,
+  description TEXT,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+```
 
-Dynamic Island Navbar: Navbar di bagian atas yang tidak statis. Bisa bereaksi (misalnya, membesar atau menampilkan notifikasi) saat di-scroll atau saat ada interaksi tertentu.
+#### **Tabel `articles`**
 
-Efek Liquid Glass (Glassmorphism): Penggunaan efek blur transparan pada beberapa elemen (seperti card, sidebar, atau navbar itu sendiri) untuk memberikan kesan modern dan berlapis.
+Tabel utama untuk menyimpan semua artikel berita.
 
-Tema Cerah & Minimalis: Palet warna dominan putih atau warna terang lainnya, tipografi yang bersih, dan tata letak yang tidak ramai.
+```sql
+CREATE TABLE articles (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  title TEXT NOT NULL,
+  slug TEXT NOT NULL UNIQUE,
+  content TEXT,
+  featured_image_url TEXT,
+  author_id UUID REFERENCES authors(id) ON DELETE SET NULL,
+  category_id UUID REFERENCES categories(id) ON DELETE SET NULL,
+  published_at TIMESTAMP WITH TIME ZONE,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+```
 
-Desain Responsif: Tampilan website akan beradaptasi dengan baik di berbagai ukuran layar (desktop, tablet, dan mobile).
+#### **Aturan Keamanan (Row Level Security - RLS)**
 
-Akses Publik Penuh: Tidak ada sistem login/registrasi untuk pengguna umum. Semua konten yang berstatus "published" dapat diakses secara bebas tanpa perlu membuat akun.
+Meskipun halaman admin akan dilindungi oleh Clerk, kita tetap akan menerapkan RLS di Supabase sebagai lapisan keamanan tambahan. Untuk proyek berita ini, tabel `articles`, `categories`, dan `authors` perlu dapat dibaca oleh publik, namun hanya admin yang dapat memodifikasinya.
 
-B. Fitur untuk Halaman Admin (Admin-Only Features)
+Karena starter kit ini sudah mengintegrasikan Clerk dengan Supabase, kita bisa memanfaatkan `auth.jwt() ->> 'sub'` untuk mengidentifikasi pengguna yang sedang login. Namun, untuk website berita di mana kontennya publik, kita bisa menerapkan aturan yang lebih sederhana.
 
-Halaman Login Aman
+Berikut adalah contoh SQL untuk mengaktifkan RLS yang memungkinkan semua orang membaca data, tetapi membatasi operasi tulis hanya pada pengguna yang terautentikasi (yang dalam kasus ini adalah admin).
 
-Halaman terpisah (contoh: domain.com/admin) yang menjadi satu-satunya gerbang otentikasi di seluruh website.
+```sql
+-- Aktifkan RLS untuk semua tabel
+ALTER TABLE articles ENABLE ROW LEVEL SECURITY;
+ALTER TABLE categories ENABLE ROW LEVEL SECURITY;
+ALTER TABLE authors ENABLE ROW LEVEL SECURITY;
 
-Hanya pengguna yang terdaftar sebagai 'admin' yang dapat masuk.
+-- Izinkan semua orang membaca (SELECT) data
+CREATE POLICY "Allow public read access" ON articles FOR SELECT USING (true);
+CREATE POLICY "Allow public read access" ON categories FOR SELECT USING (true);
+CREATE POLICY "Allow public read access" ON authors FOR SELECT USING (true);
 
-Dashboard Admin
+-- Hanya izinkan pengguna yang terautentikasi untuk melakukan operasi tulis (INSERT, UPDATE, DELETE)
+-- Anda perlu menambahkan peran 'admin' atau 'editor' di Supabase Auth untuk ini
+-- atau cukup andalkan `authenticated` jika semua pengguna yang bisa login adalah admin.
+CREATE POLICY "Allow write access for authenticated users" ON articles FOR ALL
+  USING (auth.role() = 'authenticated') WITH CHECK (auth.role() = 'authenticated');
 
-Setelah login, admin akan diarahkan ke dashboard utama.
+CREATE POLICY "Allow write access for authenticated users" ON categories FOR ALL
+  USING (auth.role() = 'authenticated') WITH CHECK (auth.role() = 'authenticated');
 
-Menampilkan ringkasan data dan daftar semua kegiatan (baik yang sudah dipublikasi maupun yang masih draf) dalam bentuk tabel.
+CREATE POLICY "Allow write access for authenticated users" ON authors FOR ALL
+  USING (auth.role() = 'authenticated') WITH CHECK (auth.role() = 'authenticated');
 
-Manajemen Konten (CRUD)
-
-Create: Tombol untuk membuat artikel kegiatan baru. Dilengkapi dengan form input untuk judul, konten (menggunakan rich text editor), dan unggah gambar utama.
-
-Read: Melihat detail kegiatan dari sisi admin.
-
-Update: Mengedit artikel kegiatan yang sudah ada.
-
-Delete: Menghapus artikel kegiatan dengan konfirmasi.
-
-4. Alur Pengguna (User Flow)
-A. Alur Pengguna Umum (Public User)
-
-Pengguna mengunjungi halaman utama website.
-
-Melihat daftar kegiatan terbaru.
-
-Meng-klik salah satu judul kegiatan yang menarik.
-
-Diarahkan ke halaman detail kegiatan dan membaca isinya.
-
-Kembali ke halaman utama untuk melihat kegiatan lainnya.
-
-B. Alur Pengguna Admin (Admin User)
-
-Admin mengakses halaman login khusus (misal: domain.com/admin).
-
-Memasukkan email dan password, lalu klik "Login".
-
-Sistem memverifikasi kredensial. Jika valid, admin diarahkan ke Dashboard Admin.
-
-Dari dashboard, admin bisa melakukan operasi Create, Update, atau Delete pada kegiatan.
-
-Setelah selesai, admin dapat melakukan Logout untuk keluar dari sesi.
+```
