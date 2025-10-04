@@ -135,3 +135,4 @@ CREATE POLICY "Allow write access for authenticated users" ON authors FOR ALL
   USING (auth.role() = 'authenticated') WITH CHECK (auth.role() = 'authenticated');
 
 ```
+
